@@ -14,7 +14,11 @@ public class PlayerMovement : MonoBehaviour
 
     [Header("Ground")]
     [SerializeField] private LayerMask jumpableGround;
-    private BoxCollider2D coll; 
+    private BoxCollider2D coll;
+
+    [Header("Jumping")]
+    [SerializeField] int jumpingGravityScale;
+    [SerializeField] int fallingGravityScale;
 
 
     void Start()
@@ -31,6 +35,7 @@ public class PlayerMovement : MonoBehaviour
         Jump();
         UpdateAnimationState();
         IsJumping();
+        SetGravityScale();
     }
 
     private void Jump()
@@ -80,6 +85,22 @@ public class PlayerMovement : MonoBehaviour
         else
         {
             animator.SetBool("isJumping", true);
+        }
+    }
+
+    private void SetGravityScale()
+    {
+        if(rb.linearVelocityY > 0f)
+        {
+            rb.gravityScale = jumpingGravityScale;
+        }
+        else if(rb.linearVelocityY < 0f)
+        {
+            rb.gravityScale = fallingGravityScale;
+        }
+        else
+        {
+            rb.gravityScale = jumpingGravityScale;
         }
     }
 }
